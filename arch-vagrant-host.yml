@@ -1,0 +1,48 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+  sudo: false
+  user: augustl
+  tasks:
+  - name: Install packages
+    pacman: name=virtualbox,virtualbox-host-modules,qt4,net-tools,vagrant,nfs-utils update_cache=yes
+    sudo: true
+
+  - name: Add user to vboxusers group
+    user: append=yes groups=vboxusers name=$username
+    sudo: true
+
+  - name: Load modules on boot
+    copy: src=templates/virtualbox-modules.conf dest=/etc/modules-load.d/virtualbox.conf
+    sudo: true
+
+  - name: Load modules now, for convenience
+    command: modprobe $item
+    sudo: true
+    with_items:
+      - vboxdrv
+      - vboxnetadp
+      - vboxnetflt
+      - vboxpci
+
+  - name: Put rpc.nfsd on path as nfsd
+    file: src=/usr/bin/rpc.nfsd path=/usr/bin/nfsd state=link
+    sudo: true
+
+  - name: Auto-start rpc-idmapd on boot
+    command: systemctl enable rpc-idmapd.service
+    sudo: true
+
+  - name: Start rpc-idmapd now
+    command: systemctl start rpc-idmapd.service
+    sudo: true
+
+  - name: Auto-start rpc-mountd on boot
+    command: systemctl start rpc-mountd.service
+    sudo: true
+
+  - name: Start rpc-mountd now
+    command: systemctl start rpc-mountd.service
+    sudo: true
+
