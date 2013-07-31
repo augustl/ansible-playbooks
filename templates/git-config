@@ -1,0 +1,9 @@
+[user]
+	email = august@augustl.com
+	name = August Lilleaas
+[push]
+	default=simple
+[color]
+	ui = true
+[core]
+	excludesfile={{ home_directory }}/.gitignore

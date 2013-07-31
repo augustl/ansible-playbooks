@@ -1,0 +1,6 @@
+[Configuration]
+FontName=Inconsolata Medium 11
+ShortcutsNoMenukey=TRUE
+ShortcutsNoMnemonics=TRUE
+MiscBorderDefault=FALSE
+MiscMenubarDefault=FALSE

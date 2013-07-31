@@ -1,0 +1,18 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+  sudo: false
+  user: augustl
+  tasks:
+  - name: Add custom repo group
+    lineinfile: dest=/etc/pacman.conf regexp=^\[augustl\] line=[augustl]
+    sudo: true
+
+  - name: Add custom repo group include line
+    lineinfile: dest=/etc/pacman.conf regexp="^Include \= \/etc/pacman\.d/augustl" line="Include = /etc/pacman.d/augustl"
+    sudo: true
+
+  - name: Copy in custom repo config file
+    copy: src=templates/augustl-pacman-conf dest=/etc/pacman.d/augustl
+    sudo: true

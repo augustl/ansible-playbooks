@@ -1,0 +1,5 @@
+# So that gtk doesn't look like 1996
+include "/usr/share/themes/Clearlooks/gtk-2.0/gtkrc"
+
+# So that we can change keyboard shortcuts in GTK apps
+gtk-can-change-accels=1

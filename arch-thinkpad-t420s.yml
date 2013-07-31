@@ -1,0 +1,14 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+    home_directory: /home/$username
+  sudo: false
+  user: $username
+  tasks:
+  - name: Install packages
+    pacman: name=xf86-video-intel,xf86-input-synaptics update_cache=yes
+    sudo: true
+
+  - name: Set menu key to super
+    lineinfile: dest=$home_directory/.xinitrc regexp="^\{ sleep 0\.5\; xmodmap" line='{ sleep 0.5; xmodmap -e "keycode 135 = Super_L NoSymbol Super_L" ; } &'

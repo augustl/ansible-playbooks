@@ -1,0 +1,3 @@
+eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh | while read line; do echo "export $line"; done)
+setxkbmap -layout us -variant altgr-intl &
+exec i3
