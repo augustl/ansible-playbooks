@@ -6,7 +6,7 @@
   user: augustl
   tasks:
   - name: Add custom repo group
-    lineinfile: dest=/etc/pacman.conf regexp=^\[augustl\] line=[augustl]
+    lineinfile: dest=/etc/pacman.conf regexp="^\[augustl\]" line="[augustl]"
     sudo: true
 
   - name: Add custom repo group include line
