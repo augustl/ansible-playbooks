@@ -30,6 +30,10 @@
       - vboxnetflt
       - vboxpci
 
+  - name: Allows statd to start properly
+    lineinfile: dest=/etc/conf.d/nfs-common.conf regexp="^NEED_STATD" line='NEED_STATD="YES"'
+    sudo: true
+
   - name: Put rpc.nfsd on path as nfsd
     file: src=/usr/bin/rpc.nfsd path=/usr/bin/nfsd state=link
     sudo: true
