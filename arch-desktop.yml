@@ -8,7 +8,7 @@
   user: augustl
   tasks:
   - name: Install packages
-    pacman: name=xorg-server,xorg-server-utils,xorg-xinit,i3,dmenu,mesa-libgl,ttf-inconsolata,bdf-unifont,ttf-dejavu,ttf-freefont,ttf-bitstream-vera,ttf-liberation,xfce4-terminal,gtk-engines,gnome-keyring update_cache=yes
+    pacman: name=xorg-server,xorg-server-utils,xorg-xinit,i3,dmenu,mesa-libgl,ttf-inconsolata,bdf-unifont,ttf-dejavu,ttf-freefont,ttf-bitstream-vera,ttf-liberation,xfce4-terminal,gtk-engines,gnome-keyring,pm-utils update_cache=yes
     sudo: true
 
   - name: Copy in gtk2 config
