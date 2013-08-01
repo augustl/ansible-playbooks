@@ -1,0 +1,21 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+    home_directory: /home/$username
+  sudo: false
+  user: augustl
+  tasks:
+  - name: Add VBoxClient to xinitrc
+    lineinfile: dest=$home_directory/.xinitrc regexp="^VBoxClient-All" line="VBoxClient-all &" insertbefore=BOF
+
+  - name: Launch VBoxClient
+    command: VBoxClient-all
+
+  - name: Enable vboxservice
+    command: systemctl enable vboxservice.service
+    sudo: true
+
+  - name: Start vboxservice
+    command: systemctl start vboxservice.service
+    sudo: true
