@@ -2,6 +2,10 @@
   vars:
     ansible_connection: local
     ansible_python_interpreter: /usr/bin/python2
+    rpc_services:
+      - rpc-idmapd
+      - rpc-mountd
+      - rpc-statd
   sudo: false
   user: augustl
   tasks:
@@ -30,19 +34,12 @@
     file: src=/usr/bin/rpc.nfsd path=/usr/bin/nfsd state=link
     sudo: true
 
-  - name: Auto-start rpc-idmapd on boot
-    command: systemctl enable rpc-idmapd.service
+  - name: Auto-start services on boot
+    command: systemctl enable $item.service
     sudo: true
+    with_items: $rpc_services
 
-  - name: Start rpc-idmapd now
-    command: systemctl start rpc-idmapd.service
+  - name: Start services now, for convenience
+    command: systemctl start $item.service
     sudo: true
-
-  - name: Auto-start rpc-mountd on boot
-    command: systemctl start rpc-mountd.service
-    sudo: true
-
-  - name: Start rpc-mountd now
-    command: systemctl start rpc-mountd.service
-    sudo: true
-
+    with_items: $rpc_services
