@@ -7,6 +7,10 @@
   sudo: false
   user: augustl
   tasks:
+  - name: Configure pacman to not care about slow networks, firewalls, etc
+    sudo: true
+    lineinfile: dest=/etc/pacman.conf regexp=^XferCommand line='XferCommand = /usr/bin/curl --speed-time 0 --silent -C - -f %u > %o' insertafter='^\[options\]'
+
   - name: Install packages
     pacman: name=xorg-server,xorg-server-utils,xorg-xinit,i3,dmenu,mesa-libgl,ttf-inconsolata,bdf-unifont,ttf-dejavu,ttf-freefont,ttf-bitstream-vera,ttf-liberation,xfce4-terminal,gtk-engines,gnome-keyring,pm-utils update_cache=yes
     sudo: true
