@@ -1,0 +1,36 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+    home_directory: /home/$username
+    local_directory: $home_directory/local
+    node_version: node-v0.10.15
+    node_source_path: $local_directory/$node_version
+    node_bin_path: $local_directory/node
+    buster_home: $home_directory/buster
+  sudo: false
+  user: augustl
+  tasks:
+  - name: Ensure presence of local directory
+    file: path=$local_directory state=directory
+
+  - name: Download Node.JS
+    get_url: url=http://nodejs.org/dist/v0.10.15/$node_version.tar.gz dest=$local_directory
+
+  - name: Extract Node.JS tarball
+    command: tar xfz $local_directory/$node_version.tar.gz chdir=$local_directory
+
+  - name: Configure Node.JS
+    command: ./configure --prefix=$node_bin_path chdir=$node_source_path
+
+  - name: Make Node.JS
+    command: make chdir=$node_source_path
+
+  - name: Make install Node.JS
+    command: make install chdir=$node_source_path
+
+  - name: Add Node.JS to PATH
+    lineinfile: dest=$home_directory/.bashrc regexp="^PATH\=$node_bin_path" line="PATH=$node_bin_path/bin:\$PATH"
+
+  - name: Set NODE_PATH
+    lineinfile: dest=$home_directory/.bashrc regexp="^NODE_PATH=$buster_home" line="NODE_PATH=$buster_home:\$NODE_PATH"
