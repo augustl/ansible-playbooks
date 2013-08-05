@@ -1,0 +1,14 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+    home_directory: /home/$username
+  sudo: false
+  user: augustl
+  tasks:
+  - name: Install packages
+    pacman: name=networkmanager,network-manager-applet update_cache=yes
+    sudo: true
+
+  - name: Start nm-applet with xorg
+    lineinfile: dest=$home_directory/.xinitrc regexp="^nm-applet" line='nm-applet &' insertbefore="^exec"
