@@ -1,0 +1,3 @@
+ansible_python_interpreter: /usr/bin/python2
+home_directory: /home/$username
+xfce4_term_conf: $home_directory/.config/xfce4/terminal

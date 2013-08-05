@@ -2,18 +2,14 @@
   vars:
     ansible_connection: local
     ansible_python_interpreter: /usr/bin/python2
+    username: "{{ lookup('env','USER') }}"
     home_directory: /home/$username
     thinkpad_acpi_conf: /etc/modprobe.d/thinkpad_acpi.conf
   sudo: false
   user: $username
-  tasks:
-  - name: Install packages
-    pacman: name=xf86-video-intel,xf86-input-synaptics update_cache=yes
-    sudo: true
-
-  - name: Set menu key to super
-    lineinfile: dest=$home_directory/.xinitrc regexp="^\{ sleep 0\.5\; xmodmap" line='{ sleep 0.5; xmodmap -e "keycode 135 = Super_L NoSymbol Super_L" ; } &' insertbefore="^exec"
-
-  - name: Allow custom fan control
-    lineinfile: dest=$thinkpad_acpi_conf regexp="^options\ thinkpad_acpi\ fan_control\=1" line="options thinkpad_acpi fan_control=1" create=yes
-    sudo: true
+  roles:
+    - arch-base-system
+    - arch-desktop
+    - arch-networkmanager
+    - arch-devbox
+    - arch-thinkpad-t420s

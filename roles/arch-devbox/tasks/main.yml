@@ -1,0 +1,15 @@
+- name: Install packages
+  pacman: name=emacs,git,firefox
+  sudo: true
+
+- name: Copy in git config
+  template: src=templates/git-config dest=$home_directory/.gitconfig
+
+- name: Download emacs settings
+  git: repo=ssh://git@github.com/augustl/.emacs.d.git dest=$home_directory/.emacs.d
+
+- name: Update emacs settings submodules
+  command: git submodule update --init chdir=$home_directory/.emacs.d
+
+- name: Copy in emacs config file
+  copy: src=templates/emacs-config.el dest=$home_directory/.emacs.d/init.el
