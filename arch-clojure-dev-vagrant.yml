@@ -1,0 +1,13 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python2
+    username: "{{ lookup('env','USER') }}"
+    home_directory: /home/$username
+  sudo: false
+  user: $username
+  roles:
+    - arch-base-system
+    - arch-desktop
+    - arch-devbox
+    - arch-vbox-guest
