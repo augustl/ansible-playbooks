@@ -13,3 +13,9 @@
 
 - name: Copy in emacs config file
   copy: src=templates/emacs-config.el dest=$home_directory/.emacs.d/init.el
+
+- name: Ensure presence of local bin
+  file: state=directory recurse=yes path=$home_directory/local/bin
+
+- name: Add local bin to $PATH
+  lineinfile: dest=$home_directory/.bashrc regexp="^export PATH\=\$HOME\/local\/bin" line="export PATH=\$HOME/local/bin:\$PATH"

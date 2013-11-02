@@ -1,0 +1,9 @@
+- name: Install packages
+  pacman: name=jdk7-openjdk
+  sudo: true
+
+- name: Install leiningen
+  get_url: url=https://raw.github.com/technomancy/leiningen/stable/bin/lein dest=$lein_bin
+
+- name: Make leiningen executable
+  file: path=$lein_bin mode=0744

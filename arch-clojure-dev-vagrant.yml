@@ -11,3 +11,4 @@
     - arch-desktop
     - arch-devbox
     - arch-vbox-guest
+    - arch-clojure-dev
