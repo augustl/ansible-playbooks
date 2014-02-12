@@ -3,16 +3,16 @@
   sudo: true
 
 - name: Copy in gtk2 config
-  copy: src=templates/gtk2-config dest=$home_directory/.gtkrc-2.0
+  copy: src=templates/gtk2-config dest={{home_directory}}/.gtkrc-2.0
 
 - name: Create directories for xfcd4-terminal config
-  file: state=directory path=$xfce4_term_conf recurse=yes
+  file: state=directory path={{xfce4_term_conf}} recurse=yes
 
 - name: Copy in xfce4-terminal config file
-  copy: src=templates/xfce4-terminal-config dest=$xfce4_term_conf/terminalrc
+  copy: src=templates/xfce4-terminal-config dest={{xfce4_term_conf}}/terminalrc
 
 - name: Copy in xfce4-terminal keymap config file
-  copy: src=templates/xfce4-terminal-fontconfig.scm dest=$xfce4_term_conf/accels.scm
+  copy: src=templates/xfce4-terminal-fontconfig.scm dest={{xfce4_term_conf}}/accels.scm
 
 - name: Copy in xinitrc
-  copy: src=templates/xinitrc dest=$home_directory/.xinitrc
+  copy: src=templates/xinitrc dest={{home_directory}}/.xinitrc

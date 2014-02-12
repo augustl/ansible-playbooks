@@ -3,4 +3,4 @@
   sudo: true
 
 - name: Start nm-applet with xorg
-  lineinfile: dest=$home_directory/.xinitrc regexp="^nm-applet" line='nm-applet &' insertbefore="^exec"
+  lineinfile: dest={{home_directory}}/.xinitrc regexp="^nm-applet" line='nm-applet &' insertbefore="^exec"
