@@ -1,7 +1,3 @@
-- name: Configure pacman to not care about slow networks, firewalls, etc
-  sudo: true
-  lineinfile: dest=/etc/pacman.conf regexp=^XferCommand line='XferCommand = /usr/bin/curl --speed-time 0 --silent -C - -f %u > %o' insertafter='^\[options\]'
-
 - name: Install packages
   pacman: name=pm-utils
   sudo: true
