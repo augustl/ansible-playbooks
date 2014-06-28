@@ -8,5 +8,6 @@
   roles:
     - ubuntu-unfuck
     - ubuntu-override-defaults
+    - ubuntu-desktop
     - ubuntu-devbox
     - ubuntu-thinkpad-t420s
