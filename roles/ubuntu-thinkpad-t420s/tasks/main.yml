@@ -15,3 +15,16 @@
 - name: Copy in thinkfan config
   copy: src=thinkfan.conf dest=/etc/thinkfan.conf
   sudo: true
+
+- name: Add TLP repo
+  apt_repository: repo="ppa:linrunner/tlp"
+  sudo: true
+
+- name: Intall TLP
+  apt: name={{item}}
+  sudo: true
+  with_items:
+    - tlp
+    - tlp-rdw
+    - tp-smapi-dkms
+    - acpi-call-tools
