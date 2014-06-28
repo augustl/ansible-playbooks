@@ -1,0 +1,12 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    username: "{{ lookup('env','USER') }}"
+    home_directory: "/home/{{username}}"
+  sudo: false
+  user: "{{username}}"
+  roles:
+    - ubuntu-unfuck
+    - ubuntu-override-defaults
+    - ubuntu-devbox
+    - ubuntu-thinkpad-t420s

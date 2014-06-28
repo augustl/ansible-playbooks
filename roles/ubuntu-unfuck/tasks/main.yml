@@ -1,0 +1,8 @@
+- name: Remove packages
+  apt: name={{item}} state=absent
+  sudo: true
+  with_items:
+    - unity-lens-shopping
+
+- name: Disable remote content search in launcher
+  shell: gsettings set com.canonical.Unity.Lenses remote-content-search none

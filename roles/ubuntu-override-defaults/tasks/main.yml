@@ -1,0 +1,10 @@
+- name: Remove packages
+  apt: name={{item}} state=absent
+  sudo: true
+  with_items:
+    - deja-dup
+    - empathy
+
+
+- name: Auto-hide launcher
+  shell: gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
