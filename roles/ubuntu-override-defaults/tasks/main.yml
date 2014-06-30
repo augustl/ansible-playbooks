@@ -23,3 +23,6 @@
 
 - name: Disable gnome-terminal menu key accelerators
   shell: gconftool-2 --set /apps/gnome-terminal/global/use_menu_accelerators -t bool false
+
+- name: Disable alt menu key
+  shell: dconf write /org/compiz/integrated/show-hud "['disabled']"
