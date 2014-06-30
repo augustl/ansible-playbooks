@@ -4,6 +4,7 @@
   with_items:
     - emacs
     - fonts-inconsolata
+    - build-essential
 
 - name: Copy in git config
   template: src=templates/git-config dest={{home_directory}}/.gitconfig

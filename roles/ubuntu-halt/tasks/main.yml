@@ -2,6 +2,6 @@
   apt: name={{item}}
   sudo: true
   with_items:
-    - owncloud-client
-    - keepassx
-    - pidgin
+    - gcc-multilib
+    - qemu-system-x86
+    - nasm

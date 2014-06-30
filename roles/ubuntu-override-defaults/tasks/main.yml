@@ -5,6 +5,21 @@
     - deja-dup
     - empathy
 
-
 - name: Auto-hide launcher
   shell: gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
+
+- name: Disable gnome-terminal alt+n keyboard shortcuts
+  shell: gconftool-2 --set /apps/gnome-terminal/keybindings/switch_to_tab_{{item}} -t string disabled
+  with_items: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+- name: Set gnome-terminal prev tab keyboard shortcut
+  shell: gconftool-2 --set /apps/gnome-terminal/keybindings/prev_tab -t string "<Primary><Shift>Left"
+
+- name: Set gnome-terminal next tab keyboard shortcut
+  shell: gconftool-2 --set /apps/gnome-terminal/keybindings/next_tab -t string "<Primary><Shift>Right"
+
+- name: Disable gnome-terminal menu key mnenomics
+  shell: gconftool-2 --set /apps/gnome-terminal/global/use_mnemonics -t bool false
+
+- name: Disable gnome-terminal menu key accelerators
+  shell: gconftool-2 --set /apps/gnome-terminal/global/use_menu_accelerators -t bool false
