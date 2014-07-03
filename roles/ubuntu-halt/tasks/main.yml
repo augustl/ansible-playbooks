@@ -34,7 +34,7 @@
   file: path={{gcc_build_dir}} state=directory
 
 - name: Configure GCC
-  shell: chdir={{gcc_build_dir}} ../gcc-{{gcc_version}}/configure --target={{target}} --prefix={{install_dir}} --disable-nls --enable-languages=c --without-headesr
+  shell: chdir={{gcc_build_dir}} ../gcc-{{gcc_version}}/configure --target={{target}} --prefix={{install_dir}} --disable-nls --enable-languages=c --without-headers
 
 - name: Make GCC
   shell: chdir={{gcc_build_dir}} make all-gcc
