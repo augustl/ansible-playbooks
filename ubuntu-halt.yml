@@ -3,6 +3,10 @@
     ansible_connection: local
     username: "{{ lookup('env','USER') }}"
     home_directory: "/home/{{username}}"
+    gcc_version: 4.8.3
+    target: i686-elf
+    install_dir: "{{home_directory}}/local/gcc-cross"
+    gcc_build_dir: "{{home_directory}}/local/build-gcc-{{gcc_version}}"
   sudo: false
   user: "{{username}}"
   roles:
