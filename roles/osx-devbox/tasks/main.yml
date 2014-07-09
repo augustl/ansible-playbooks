@@ -1,0 +1,29 @@
+- name: Copy in git config
+  template: src=templates/git-config dest={{home_directory}}/.gitconfig
+
+- name: Download emacs settings
+  git: repo=ssh://git@github.com/augustl/.emacs.d.git dest={{home_directory}}/.emacs.d accept_hostkey=True
+
+- name: Update emacs settings submodules
+  command: git submodule update --init chdir={{home_directory}}/.emacs.d
+
+- name: Copy in emacs config file
+  copy: src=templates/emacs-config.el dest={{home_directory}}/.emacs.d/init.el
+
+- name: Ensure presence of local bin
+  file: state=directory recurse=yes path={{home_directory}}/local/bin
+
+- name: Ensure presence of bash_profile
+  file: state=touch path={{home_directory}}/.bash_profile
+
+- name: Load bashrc in bash_profile
+  lineinfile: dest={{home_directory}}/.bash_profile regexp="\. \$HOME\/\.bashrc" line="[[ -r $HOME/.bashrc ]] && . $HOME/.bashrc"
+
+- name: Ensure presence of bashrc
+  file: state=touch path={{home_directory}}/.bashrc
+
+- name: Add local bin to $PATH
+  lineinfile: dest={{home_directory}}/.bashrc regexp="^export PATH\=\$HOME\/local\/bin" line="export PATH=$HOME/local/bin:$PATH"
+
+- name: Add brew to beginning of $PATH
+  lineinfile: dest={{home_directory}}/.bashrc regexp="^export PATH=\/usr\/local\/bin" line="export PATH=/usr/local/bin:$PATH"

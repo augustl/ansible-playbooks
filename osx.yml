@@ -1,0 +1,10 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    username: "{{ lookup('env','USER') }}"
+    home_directory: "{{ lookup('env', 'HOME') }}"
+  sudo: false
+  user: "{{username}}"
+  roles:
+    - osx-desktop
+    - osx-devbox

@@ -1,0 +1,10 @@
+- name: Clear all persistent dock apps
+  command: defaults delete com.apple.dock persistent-apps
+  ignore_errors: yes
+
+- name: Automatically hide dock
+  command: defaults write com.apple.dock autohide -int 1
+
+- name: Restart dock
+  command: killall Dock
+  ignore_errors: yes
