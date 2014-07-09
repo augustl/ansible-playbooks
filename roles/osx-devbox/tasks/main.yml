@@ -1,3 +1,9 @@
+- name: Install brew cask
+  command: brew install caskroom/cask/brew-cask
+
+- name: Install emacs
+  homebrew: name=emacs install_options=cocoa
+
 - name: Copy in git config
   template: src=templates/git-config dest={{home_directory}}/.gitconfig
 
@@ -8,7 +14,7 @@
   command: git submodule update --init chdir={{home_directory}}/.emacs.d
 
 - name: Copy in emacs config file
-  copy: src=templates/emacs-config.el dest={{home_directory}}/.emacs.d/init.el
+  copy: src=templates/emacs-config-osx.el dest={{home_directory}}/.emacs.d/init.el
 
 - name: Ensure presence of local bin
   file: state=directory recurse=yes path={{home_directory}}/local/bin

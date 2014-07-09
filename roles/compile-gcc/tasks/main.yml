@@ -1,14 +1,3 @@
-- name: Install packages
-  apt: name={{item}}
-  sudo: true
-  with_items:
-    - gcc-multilib
-    - qemu-system-x86
-    - nasm
-    - libgmp3-dev
-    - libmpfr-dev
-    - libmpc-dev
-
 - name: Get binutils sources
   get_url: url=http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.gz dest=~/local/binutils-2.24.tar.gz sha256sum=4930b2886309112c00a279483eaef2f0f8e1b1b62010e0239c16b22af7c346d4
 
@@ -23,6 +12,9 @@
 
 - name: Install binutils
   shell: chdir=~/local/binutils-2.24 make install
+
+- name: wat
+  debug: msg=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-{{gcc_version}}/gcc-{{gcc_version}}.tar.gz
 
 - name: Get GCC sources
   get_url: url=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-{{gcc_version}}/gcc-{{gcc_version}}.tar.gz dest=~/local/gcc-{{gcc_version}}.tar.gz sha256sum=5a46edbee29b6fed9006c02899db7cb7eff5f2d5837678484e1ff7da3b4beb6f

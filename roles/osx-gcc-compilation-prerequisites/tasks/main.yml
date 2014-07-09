@@ -1,0 +1,6 @@
+- name: Install packages
+  homebrew: name={{item}}
+  with_items:
+    - libmpc
+    - mpfr
+    - gmp

@@ -1,0 +1,8 @@
+- name: Install packages
+  apt: name={{item}}
+  sudo: true
+  with_items:
+    - gcc-multilib
+    - libgmp3-dev
+    - libmpfr-dev
+    - libmpc-dev
