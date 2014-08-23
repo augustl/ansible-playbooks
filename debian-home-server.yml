@@ -1,0 +1,9 @@
+- hosts: all
+  vars:
+    username: "{{ lookup('env','USER') }}"
+    home_directory: /home/{{username}}
+    node_version: v0.10.31
+  sudo: false
+  user: "{{username}}"
+  roles:
+    - debian-home-server-setup-mailserver

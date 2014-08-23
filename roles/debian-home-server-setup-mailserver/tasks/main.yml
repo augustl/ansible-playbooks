@@ -1,0 +1,67 @@
+- name: Install packages
+  apt: name={{item}}
+  sudo: true
+  with_items:
+    - dovecot-imapd
+    - build-essential
+    - screen
+
+- name: Copy in dovecot main config file
+  copy: src=dovecot.conf dest=/etc/dovecot/dovecot.conf
+  sudo: true
+
+- name: Setup dovecot service
+  service: name=dovecot state=reloaded enabled=yes
+  sudo: true
+
+- name: Ensure presence of src dir
+  file: path={{home_directory}}/src state=directory
+
+- name: Download Node.js
+  get_url: url=http://nodejs.org/dist/{{node_version}}/node-{{node_version}}.tar.gz dest={{home_directory}}/src/node-{{node_version}}.tar.gz sha256sum=06c781718a674dfdfb59d646b2629a46af2644bdbf52534fab8d4a0fe34c21f1
+
+- name: Extract Node.js
+  shell: tar xvfz node-{{node_version}}.tar.gz chdir={{home_directory}}/src creates={{home_directory}}/src/node-{{node_version}}
+
+- name: Configure Node.js
+  shell: ./configure --prefix={{home_directory}}/local/node-{{node_version}} chdir={{home_directory}}/src/node-{{node_version}} creates={{home_directory}}/local/node-v0.10.31
+
+- name: Make Node.js
+  shell: make chdir={{home_directory}}/src/node-{{node_version}} creates={{home_directory}}/local/node-v0.10.31
+
+- name: Make install Node.js
+  shell: make install chdir={{home_directory}}/src/node-{{node_version}} creates={{home_directory}}/local/node-v0.10.31
+
+- name: Create SMTP server home folder
+  file: path={{home_directory}}/local/smtp-server state=directory
+
+- name: Install SMTP server
+  copy: src=smtp-server.js dest={{home_directory}}/local/smtp-server/smtp-server.js
+
+- name: Install SMTP server dependencies
+  shell: env {{home_directory}}/local/node-{{node_version}}/bin/npm install simplesmtp chdir={{home_directory}}/local/smtp-server
+
+- name: Install spam filter client
+  copy: src=spam-filter.js dest={{home_directory}}/local/smtp-server/spam-filter.js
+
+- name: Install spam learner script
+  copy: src=learn-spam.sh dest={{home_directory}}/local/smtp-server/learn-spam.sh
+
+- name: Install iptables setup script
+  copy: src=iptables-setup.sh dest={{home_directory}}/local/smtp-server/iptables-setup.sh
+
+- name: Execute iptables setup script on boot
+  lineinfile: dest=/etc/rc.local regexp="iptables\-setup\.sh$" line="sh /home/augustl/local/smtp-server/iptables-setup.sh" insertbefore="^exit"
+  sudo: true
+
+- name: Copy in SMTP server init script
+  copy: src=smtpserver_init_script dest=/etc/init.d/smtpserver
+  sudo: true
+
+- name: Ensure SMTP server init script is executable
+  file: path=/etc/init.d/smtpserver mode=0777
+  sudo: true
+
+- name: Setup SMTP server init script
+  service: name=smtpserver enabled=yes
+  sudo: true
