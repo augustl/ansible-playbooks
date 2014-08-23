@@ -1,8 +1,0 @@
-- hosts: home-server
-  vars:
-    username: "{{ lookup('env','USER') }}"
-    home_directory: /home/{{username}}
-  sudo: false
-  user: "{{username}}"
-  roles:
-    - centos-setup-mailserver
