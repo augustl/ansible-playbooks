@@ -33,3 +33,6 @@
 
 - name: Add brew to beginning of $PATH
   lineinfile: dest={{home_directory}}/.bashrc regexp="^export PATH=\/usr\/local\/bin" line="export PATH=/usr/local/bin:$PATH"
+
+- name: Configure Java to not open dock icon
+  lineinfile: dest={{home_directory}}/.bashrc regexp="^export JAVA_OPTS(.*?)apple\.awt\.UIElement\=true" line="export JAVA_OPTS=-D\"apple.awt.UIElement=true\""
