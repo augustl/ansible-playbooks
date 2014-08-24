@@ -5,6 +5,7 @@
     - dovecot-imapd
     - build-essential
     - screen
+    - dspam
 
 - name: Copy in dovecot main config file
   copy: src=dovecot.conf dest=/etc/dovecot/dovecot.conf
@@ -64,4 +65,8 @@
 
 - name: Setup SMTP server init script
   service: name=smtpserver enabled=yes
+  sudo: true
+
+- name: Copy in dspam config file
+  copy: src=dspam.conf dest=/etc/dspam/dspam.conf
   sudo: true

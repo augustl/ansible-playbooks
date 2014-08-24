@@ -1,5 +1,5 @@
 #!/bin/sh
-MAIL_HOME=/home/augustl/srv/mail/augustl
+MAIL_HOME=/home/augustl/mail/augustl/Maildir
 
 learnSpam() {
     local mailf="$1"

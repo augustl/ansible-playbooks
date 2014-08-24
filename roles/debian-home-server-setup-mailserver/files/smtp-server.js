@@ -11,7 +11,7 @@ function getUuid() {
     return new Date().getTime().toString() + Math.random().toString();
 }
 
-var MAILDIR = "/home/augustl/srv/mail/augustl";
+var MAILDIR = "/home/augustl/mail/augustl/Maildir";
 var SPAMDIR = MAILDIR + "/.Spam"
 
 var opts = {
