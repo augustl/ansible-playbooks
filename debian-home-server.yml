@@ -7,3 +7,4 @@
   user: "{{username}}"
   roles:
     - debian-home-server-setup-mailserver
+    - debian-home-server-sandstorm

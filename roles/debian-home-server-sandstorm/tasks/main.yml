@@ -1,0 +1,30 @@
+- name: Install packages
+  apt: name={{item}} state=present
+  sudo: true
+  with_items:
+    - apache2
+
+- name: Add wheezy-backports
+  apt_repository: repo='deb http://ftp.no.debian.org/debian wheezy-backports main' state=present update_cache=yes
+  sudo: true
+
+- name: Install latest stable kernel
+  apt: name=linux-image-amd64 default_release=wheezy-backports state=latest
+  sudo: true
+
+- name: Enable required apache modules
+  apache2_module: name={{item}} state=present
+  sudo: true
+  with_items:
+    - proxy
+    - proxy_http
+    - ssl
+    - rewrite
+
+- name: Copy in apache config
+  copy: src=apache-vhost.conf dest=/etc/apache2/sites-available/sandstorm.augustl.com
+  sudo: true
+
+- name: Enable apache config
+  file: state=link src=/etc/apache2/sites-available/sandstorm.augustl.com dest=/etc/apache2/sites-enabled/sandstorm.augustl.com
+  sudo: true
