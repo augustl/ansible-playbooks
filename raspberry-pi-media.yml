@@ -1,0 +1,8 @@
+- hosts: all
+  vars:
+    username: "pi"
+    home_directory: /home/{{username}}
+  sudo: false
+  user: "{{username}}"
+  roles:
+    - raspberry-pi-media

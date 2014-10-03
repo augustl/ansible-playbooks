@@ -1,0 +1,84 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:   shairport
+# Required-Start: $local_fs $remote_fs screen-cleanup
+# Required-Stop:  $local_fs $remote_fs
+# Should-Start:   $network
+# Should-Stop:    $network
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 1 6
+# Short-Description: Shairport AirPlay server
+### END INIT INFO
+
+#Settings
+SERVICE='shairport'
+USERNAME='{{username}}'
+INVOCATION="./shairport -a 'Lydia'"
+SHAIRPORT_PATH="{{home_directory}}/local/shairport/shairport-master"
+
+ME=`whoami`
+as_user() {
+  if [ $ME == $USERNAME ] ; then
+    bash -c "$1"
+  else
+    su - $USERNAME -c "$1"
+  fi
+}
+
+shairport_start() {
+  if  pgrep -u $USERNAME -f $SERVICE > /dev/null
+  then
+    echo "$SERVICE is already running!"
+  else
+    echo "Starting $SERVICE..."
+    as_user "cd $SHAIRPORT_PATH && /usr/bin/screen -dmS $SERVICE $INVOCATION"
+    sleep 1
+    if pgrep -u $USERNAME -f $SERVICE > /dev/null
+    then
+      echo "$SERVICE is now running."
+    else
+      echo "Error! Could not start $SERVICE!"
+    fi
+  fi
+}
+
+shairport_stop() {
+  if pgrep -u $USERNAME -f $SERVICE > /dev/null
+  then
+    echo "Stopping $SERVICE"
+    as_user "/usr/bin/screen -S $SERVICE -X quit"
+  else
+    echo "$SERVICE was not running."
+  fi
+  if pgrep -u $USERNAME -f $SERVICE > /dev/null
+  then
+    echo "Error! $SERVICE could not be stopped."
+  else
+    echo "$SERVICE is stopped."
+  fi
+}
+
+
+case "$1" in
+  start)
+    shairport_start
+    ;;
+  stop)
+    shairport_stop
+    ;;
+  restart)
+    shairport_stop
+    shairport_start
+    ;;
+  status)
+    if pgrep -u $USERNAME -f $SERVICE > /dev/null
+    then
+      echo "$SERVICE is running."
+    else
+      echo "$SERVICE is not running."
+    fi
+    ;;
+ esac
+
+ exit 0

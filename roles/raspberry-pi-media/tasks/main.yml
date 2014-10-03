@@ -1,0 +1,188 @@
+- name: Cleanup unneeded packages
+  apt: name={{item}} purge=yes state=absent
+  sudo: true
+  with_items:
+    - aptitude
+    - aptitude-common
+    - aspell
+    - aspell-en
+    - cifs-utils
+    - dbus
+    - dbus-x11
+    - dconf-gsettings-backend:armhf
+    - dconf-service
+    - debconf-i18n
+    - debian-reference-common
+    - debian-reference-en
+    - desktop-base
+    - desktop-file-utils
+    - dictionaries-common
+    - dillo
+    - esound-common
+    - ed
+    - fbset
+    - firmware-atheros
+    - firmware-brcm80211
+    - firmware-libertas
+    - firmware-ralink
+    - firmware-realtek
+    - fontconfig
+    - fontconfig-config
+    - fonts-droid
+    - fonts-freefont-ttf
+    - galculator
+    - gconf-service
+    - gconf2
+    - gconf2-common
+    - gdb
+    - gdbserver
+    - gettext-base
+    - ghostscript
+    - gir1.2-glib-2.0
+    - glib-networking:armhf
+    - glib-networking-common
+    - glib-networking-services
+    - gnome-icon-theme
+    - gnome-themes-standard-data
+    - gpicview
+    - groff-base
+    - gsettings-desktop-schemas
+    - gsfonts
+    - gsfonts-x11
+    - gtk2-engines:armhf
+    - gvfs:armhf
+    - gvfs-backends
+    - gvfs-common
+    - gvfs-daemons
+    - gvfs-fuse
+    - gvfs-libs:armhf
+    - hicolor-icon-theme
+    - idle
+    - idle-python2.7
+    - idle-python3.2
+    - idle3
+    - jackd
+    - jackd2
+    - java-common
+    - krb5-locales
+    - leafpad
+    - lightdm
+    - lightdm-gtk-greeter
+    - lua5.1
+    - luajit
+    - lxappearance
+    - lxde
+    - lxde-common
+    - lxde-core
+    - lxde-icon-theme
+    - lxinput
+    - lxmenu-data
+    - lxpanel
+    - lxpolkit
+    - lxrandr
+    - lxsession
+    - lxsession-edit
+    - lxshortcut
+    - lxtask
+    - lxterminal
+    - midori
+    - netsurf-common
+    - netsurf-gtk
+    - omxplayer
+    - openbox
+    - oracle-java7-jdk
+    - pcmanfm
+    - penguinspuzzle
+    - plymouth
+    - pistore
+    - qdbus
+    - qjackctl
+    - raspberrypi-artwork
+    - ruby1.9.1
+    - samba-common
+    - scratch
+    - smartsim
+    - sonic-pi
+    - squeak-plugins-scratch
+    - squeak-vm
+    - supercollider
+    - supercollider-common
+    - supercollider-server
+    - timidity
+    - tsconf
+    - ttf-dejavu-core
+    - udisks
+    - usbmuxd
+    - v4l-utils
+    - weston
+    - wolfram-engine
+    - wpagui
+    - x11-common
+    - x11-utils
+    - x11-xkb-utils
+    - x2x
+    - xarchiver
+    - xauth
+    - xdg-utils
+    - xfonts-encodings
+    - xfonts-utils
+    - xinit
+    - xkb-data
+    - xml-core
+    - xpdf
+    - xserver-common
+    - xserver-xorg
+    - xserver-xorg-core
+    - xserver-xorg-input-all
+    - xserver-xorg-input-evdev
+    - xserver-xorg-input-synaptics
+    - xserver-xorg-video-fbdev
+    - xserver-xorg-video-fbturbo
+    - zenity
+    - zenity-common
+
+- name: Install shairport dependencies
+  apt: name={{item}} state=present
+  sudo: true
+  with_items:
+    - libssl-dev
+    - libavahi-client-dev
+    - libasound2-dev
+
+- name: Install avahi
+  apt: name={{item}} state=present
+  sudo: true
+  with_items:
+    - avahi-daemon
+    - avahi-discover
+    - libnss-mdns
+
+- name: Ensure presence of src directory
+  file: path={{home_directory}}/src state=directory
+
+- name: Ensure presence of local directory
+  file: path={{home_directory}}/local state=directory
+
+- name: Download shairport
+  get_url: url=https://github.com/abrasive/shairport/archive/master.zip dest={{home_directory}}/src/shairport.zip
+
+- name: Extract shairport
+  shell: unzip shairport.zip -d {{home_directory}}/local/shairport chdir={{home_directory}}/src creates={{home_directory}}/local/shairport/shairport-master
+
+- name: Configure shairport
+  shell: ./configure chdir={{home_directory}}/local/shairport/shairport-master
+
+- name: Make shairport
+  shell: make chdir={{home_directory}}/local/shairport/shairport-master creates={{home_directory}}/local/shairport/shairport-master/shairport
+
+- name: Install GNU screen
+  apt: name=screen state=present
+  sudo: true
+
+- name: Copy in shairport init script
+  template: src=shairport_init_d dest=/etc/init.d/shairport mode=0755
+  sudo: true
+
+- name: Start shairport on boot
+  service: name=shairport state=started enabled=yes
+  sudo: true
