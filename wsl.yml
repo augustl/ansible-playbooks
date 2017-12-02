@@ -1,0 +1,11 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    username: "{{ lookup('env','USER') }}"
+    home_directory: "{{ lookup('env', 'HOME') }}"
+  user: "{{username}}"
+  roles:
+    - ubuntu-oracle-jdk-8
+    - ubuntu-intellij-idea-ultimate
+    - ubuntu-devbox
+    - wsl-ubuntu-devbox

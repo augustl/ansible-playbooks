@@ -1,0 +1,34 @@
+# https://github.com/jdauphant/ansible-role-intellij/blob/13c1489f2220f08514be862d1eb940bc59c88f01/tasks/main.yml
+
+- name: Find latest version
+  uri:
+    url: "https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&type=release"
+    return_content: yes
+    validate_certs: no
+    body_format: json
+  register: intellij_releases_response
+
+- set_fact:
+    intellij_url: "{{ intellij_releases_response.json.IIU.0.downloads.linux.link }}"
+
+- set_fact:
+    intellij_version: "{{ intellij_releases_response.json.IIU.0.version }}"
+
+- set_fact:
+    intellij_build: "{{intellij_releases_response.json.IIU.0.build}}"
+
+- name: Wat
+  debug: msg={{intellij_url}}
+
+- name: Ensure presence of opt
+  file: path={{home_directory}}/root/opt state=directory
+
+- name: Download intellij
+  get_url: url={{intellij_url}} dest={{home_directory}}/root/opt/idea_{{intellij_version}}.archive
+
+- name: Unarchive
+  unarchive:
+    copy: no
+    src: "{{home_directory}}/root/opt/idea_{{intellij_version}}.archive"
+    dest: "{{home_directory}}/root/opt"
+    creates: "{{home_directory}}/root/opt/idea-IU-{{intellij_build}}"

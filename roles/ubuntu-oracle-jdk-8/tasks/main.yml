@@ -1,0 +1,16 @@
+- name: Add PPA
+  become: true
+  apt_repository:
+    repo: "ppa:webupd8team/java"
+
+- name: Update apt
+  become: true
+  apt:
+    update_cache: true
+
+
+- name: Install Oracle JDK 8 package
+  become: true
+  apt:
+    name: oracle-java8-installer
+    state: present

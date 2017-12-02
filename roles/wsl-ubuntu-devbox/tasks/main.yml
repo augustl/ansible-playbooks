@@ -1,0 +1,13 @@
+- name: Set DISPLAY
+  lineinfile:
+    dest: "{{home_directory}}/.config/fish/config.fish"
+    regexp: "^set \\-gx DISPLAY"
+    line: "set -gx DISPLAY :0"
+
+- name: Set fish as default shell
+  lineinfile:
+    dest: "{{home_directory}}/.bashrc"
+    line: "if [[ -t 1 && -x /usr/bin/fish ]]; then exec /usr/bin/fish; fi"
+
+
+
