@@ -1,0 +1,10 @@
+- hosts: local
+  vars:
+    ansible_connection: local
+    username: "{{ lookup('env','USER') }}"
+    home_directory: "/home/{{username}}"
+  sudo: false
+  user: "{{username}}"
+  roles:
+    - fedora-devbox
+    - install-intellij-idea-ultimate

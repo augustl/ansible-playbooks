@@ -1,0 +1,39 @@
+- name: Install packages
+  yum: name={{item}}
+  become: true
+  with_items:
+    - emacs
+    - levien-inconsolata-fonts
+    - make
+    - automake
+    - gcc
+    - gcc-c++
+    - fish
+
+- name: Copy in git config
+  template: src=templates/git-config dest={{home_directory}}/.gitconfig
+
+- name: Download emacs settings
+  git: repo=ssh://git@github.com/augustl/.emacs.d.git dest={{home_directory}}/.emacs.d accept_hostkey=True
+
+- name: Update emacs settings submodules
+  command: git submodule update --init chdir={{home_directory}}/.emacs.d
+
+- name: Copy in emacs config file
+  copy: src=templates/emacs-config.el dest={{home_directory}}/.emacs.d/init.el
+
+- name: Ensure presence of local bin
+  file: state=directory recurse=yes path={{home_directory}}/root/bin
+
+- name: Ensure presence of fish config path
+  file: state=directory recurse=yes path={{home_directory}}/.config/fish
+
+- name: Ensure presence of fish config file
+  file: state=touch path={{home_directory}}/.config/fish/config.fish
+
+- name: Add local bin to $PATH
+  lineinfile:
+    dest: "{{home_directory}}/.config/fish/config.fish"
+    regexp: "^set \\-gx PATH \\$HOME\\/root\\/bin"
+    line: "set -gx PATH $HOME/root/bin $PATH"
+
